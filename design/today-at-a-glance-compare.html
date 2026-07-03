@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Today at a Glance — Original vs Current</title>
+<style>
+  :root{
+    --bg:#060b18;--surface:#0d1424;--card:#161f33;--raised:#1c2740;--border:#243049;
+    --text1:#f1f5f9;--text2:#cbd5e1;--text3:#94a3b8;--text4:#64748b;--text5:#475569;
+    --brand:#818cf8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text1);font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;padding:32px;font-size:14px;}
+  h1{font-size:18px;font-weight:700;margin-bottom:4px;}
+  .sub{font-size:13px;color:var(--text4);margin-bottom:28px;}
+  .row{display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap;}
+  .col{flex:1;min-width:380px;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:12px;}
+  .tag.old{background:rgba(100,116,139,.18);color:#94a3b8;}
+  .tag.new{background:rgba(129,140,248,.16);color:var(--brand);border:1px solid rgba(129,140,248,.35);}
+
+  /* The card */
+  .card{
+    background:linear-gradient(135deg,rgba(234,179,8,.10),rgba(22,31,51,.8) 55%,rgba(99,102,241,.06));
+    border:1px solid rgba(234,179,8,.25);border-radius:18px;
+    box-shadow:0 2px 24px rgba(234,179,8,.08);padding:24px;
+  }
+  .card.padflag{position:relative;}
+  .chead{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .chead-l{display:flex;align-items:center;gap:12px;}
+  .sun{width:36px;height:36px;border-radius:11px;background:rgba(234,179,8,.15);display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .ctitle{font-size:14px;font-weight:600;}
+  .cdate{font-size:12px;color:var(--text4);}
+
+  /* badges */
+  .badges{display:flex;gap:8px;align-items:center;}
+  .badge-old{font-size:11px;font-weight:600;padding:4px 11px;border-radius:20px;}
+  .badge-new{font-size:12px;font-weight:600;padding:5px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:3px;}
+  .bg-green{background:rgba(34,197,94,.12);color:#4ade80;}
+  .bg-red{background:rgba(239,68,68,.12);color:#f87171;}
+  .bg-gray{background:var(--raised);color:var(--text3);}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .colhdr{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
+
+  .trow{display:flex;align-items:center;gap:12px;padding:9px 0;border-top:1px solid rgba(36,48,73,.4);}
+  .trow:first-of-type{border-top:none;}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none;}
+  .tmain{flex:1;min-width:0;}
+  .ttitle{font-size:13px;color:var(--text1);display:flex;align-items:center;gap:6px;}
+  .ttime{font-size:11px;color:var(--text4);margin-top:2px;}
+  .ovd{color:#f87171;font-size:11px;font-weight:600;}
+  .play{width:26px;height:26px;border-radius:8px;background:var(--raised);color:var(--text4);display:flex;align-items:center;justify-content:center;font-size:10px;flex:none;}
+
+  .logged{background:rgba(28,39,64,.6);border:1px solid rgba(36,48,73,.4);border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .logged .amt{margin-left:auto;font-size:12px;color:var(--brand);font-weight:600;}
+
+  .ann{margin-top:14px;font-size:12px;color:var(--text3);line-height:1.7;}
+  .ann b{color:var(--text1);font-weight:600;}
+  .ann .k{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;}
+  .legend{margin-top:32px;padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;font-size:13px;color:var(--text3);line-height:1.8;max-width:900px;}
+  .legend b{color:var(--text1);}
+  .hl{color:var(--brand);font-weight:600;}
+  .pad-note{font-size:11px;color:var(--text5);margin-top:8px;font-style:italic;}
+</style>
+</head>
+<body>
+  <h1>Today at a Glance — Original vs Current</h1>
+  <div class="sub">Same sample tasks in both, so only the differences show. Wireframe approximation.</div>
+
+  <div class="row">
+    <!-- ORIGINAL -->
+    <div class="col">
+      <span class="tag old">Original</span>
+      <div class="card">
+        <div class="chead">
+          <div class="chead-l">
+            <div class="sun">☀️</div>
+            <div><div class="ctitle">Today at a Glance</div><div class="cdate">Tuesday, June 2</div></div>
+          </div>
+          <div class="badges">
+            <span class="badge-old bg-green">3 done today</span>
+            <span class="badge-old bg-red">2 overdue</span>
+            <span class="badge-old bg-gray">2h 6m logged</span>
+          </div>
+        </div>
+        <div class="grid2">
+          <div>
+            <!-- ORDER: overdue → due today → in progress -->
+            <div class="trow"><span class="dot" style="background:#ec4899"></span><div class="tmain"><div class="ttitle">🤝 LinkedIn Outreach <span class="ovd">Overdue</span></div><div class="ttime">Job Hunt · due 2:00pm</div></div><div class="play">▶</div></div>
+            <div class="trow"><span class="dot" style="background:#eab308"></span><div class="tmain"><div class="ttitle">🎬 A Ball of Fire Reel <span class="ovd">Overdue</span></div><div class="ttime">Zuvraah · due 4:00pm</div></div><div class="play">▶</div></div>
+            <div class="trow"><span class="dot" style="background:#f97316"></span><div class="tmain"><div class="ttitle">📈 AI Trading Agent App</div><div class="ttime">Claude Crash Course · due 10:00am</div></div><div class="play">▶</div></div>
+            <div class="trow"><span class="dot" style="background:#6366f1"></span><div class="tmain"><div class="ttitle">📊 WIO Account Setup</div><div class="ttime">Inbox</div></div><div class="play">▶</div></div>
+            <div class="trow"><span class="dot" style="background:#eab308"></span><div class="tmain"><div class="ttitle">🎯 SM Strategy</div><div class="ttime">Zuvraah · due 8:00am</div></div><div class="play">▶</div></div>
+          </div>
+          <div>
+            <div class="colhdr">Time Logged Today</div>
+            <div class="logged"><span class="dot" style="background:#f97316"></span>📈 AI Trading Agent App<span class="amt">1h 20m</span></div>
+            <div class="logged"><span class="dot" style="background:#ec4899"></span>🤝 LinkedIn Outreach<span class="amt">46m</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="ann">
+        <div><span class="k bg-red"></span><b>Badges:</b> full text labels — “3 done today”, “2 overdue”, “2h 6m logged”</div>
+        <div><span class="k bg-gray"></span><b>Order:</b> grouped by section → <b>Overdue</b>, then <b>Due today</b>, then <b>In progress</b></div>
+        <div class="pad-note">Padding: flat p-6 (24px) on all screens.</div>
+      </div>
+    </div>
+
+    <!-- CURRENT -->
+    <div class="col">
+      <span class="tag new">Current (now in the app)</span>
+      <div class="card" style="padding:24px;">
+        <div class="chead">
+          <div class="chead-l">
+            <div class="sun">☀️</div>
+            <div><div class="ctitle">Today at a Glance</div><div class="cdate">Tuesday, June 2</div></div>
+          </div>
+          <div class="badges">
+            <span class="badge-new bg-green">✓ 3</span>
+            <span class="badge-new bg-red">⚠ 2</span>
+            <span class="badge-new bg-gray">2h 6m</span>
+          </div>
+        </div>
+        <div class="grid2">
+          <div>
+            <!-- ORDER: by due_time ascending; no-time sinks to bottom -->
+            <div class="trow"><span class="dot" style="background:#eab308"></span><div class="tmain"><div class="ttitle">🎯 SM Strategy</div><div class="ttime">Zuvraah · due 8:00am</div></div><div class="play">▶</div></div>
+            <div class="trow"><span class="dot" style="background:#f97316"></span><div class="tmain"><div class="ttitle">📈 AI Trading Agent App</div><div class="ttime">Claude Crash Course · due 10:00am</div></div><div class="play">▶</div></div>
+            <div class="trow"><span class="dot" style="background:#ec4899"></span><div class="tmain"><div class="ttitle">🤝 LinkedIn Outreach <span class="ovd">Overdue</span></div><div class="ttime">Job Hunt · due 2:00pm</div></div><div class="play">▶</div></div>
+            <div class="trow"><span class="dot" style="background:#eab308"></span><div class="tmain"><div class="ttitle">🎬 A Ball of Fire Reel <span class="ovd">Overdue</span></div><div class="ttime">Zuvraah · due 4:00pm</div></div><div class="play">▶</div></div>
+            <div class="trow"><span class="dot" style="background:#6366f1"></span><div class="tmain"><div class="ttitle">📊 WIO Account Setup</div><div class="ttime">Inbox</div></div><div class="play">▶</div></div>
+          </div>
+          <div>
+            <div class="colhdr">Time Logged Today</div>
+            <div class="logged"><span class="dot" style="background:#f97316"></span>📈 AI Trading Agent App<span class="amt">1h 20m</span></div>
+            <div class="logged"><span class="dot" style="background:#ec4899"></span>🤝 LinkedIn Outreach<span class="amt">46m</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="ann">
+        <div><span class="k bg-red"></span><b>Badges:</b> compact icon + number — “✓ 3”, “⚠ 2”, “2h 6m”</div>
+        <div><span class="k" style="background:var(--brand)"></span><b>Order:</b> by <span class="hl">due time</span> (earliest first); tasks with no time sink to the bottom</div>
+        <div class="pad-note">Padding: responsive p-4 (16px) on mobile, p-6 (24px) on desktop.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <b>The three differences, all reversible independently:</b><br>
+    1. <b>Badges</b> — <span style="color:#94a3b8">full text labels</span> &nbsp;→&nbsp; <span class="hl">compact icon + number pills</span><br>
+    2. <b>Row order</b> — <span style="color:#94a3b8">grouped by section (overdue → due today → in progress)</span> &nbsp;→&nbsp; <span class="hl">sorted by due time</span><br>
+    3. <b>Padding</b> — <span style="color:#94a3b8">flat 24px</span> &nbsp;→&nbsp; <span class="hl">16px mobile / 24px desktop</span><br>
+    <span style="color:var(--text5)">Everything else — the amber card, two-column layout, “Time Logged Today”, “Completed today”, the play buttons — is unchanged.</span>
+  </div>
+</body>
+</html>

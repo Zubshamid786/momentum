@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Today at a Glance — Improved (Wireframe)</title>
+<style>
+  :root{
+    --bg:#060b18;--surface:#0d1424;--card:#161f33;--raised:#1c2740;--border:#243049;
+    --text1:#f1f5f9;--text2:#cbd5e1;--text3:#94a3b8;--text4:#64748b;--text5:#475569;
+    --brand:#818cf8;--brand2:#6366f1;
+    --urgent:#ef4444;--high:#f97316;--medium:#eab308;--low:#64748b;--green:#22c55e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text1);font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;padding:36px;font-size:14px;}
+  h1{font-size:18px;font-weight:700;margin-bottom:4px;}
+  .sub{font-size:13px;color:var(--text4);margin-bottom:26px;}
+  .ann-badge{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--brand2);color:#fff;font-size:11px;font-weight:700;margin-right:6px;vertical-align:middle;}
+
+  /* The card */
+  .card{
+    max-width:720px;
+    background:linear-gradient(135deg,rgba(234,179,8,.10),rgba(22,31,51,.82) 52%,rgba(99,102,241,.07));
+    border:1px solid rgba(234,179,8,.22);border-radius:18px;
+    box-shadow:0 4px 32px rgba(234,179,8,.07);padding:22px 24px;position:relative;
+  }
+
+  /* Header (⑤) */
+  .chead{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .chead-l{display:flex;align-items:center;gap:12px;}
+  .sun{width:40px;height:40px;border-radius:12px;background:rgba(234,179,8,.16);display:flex;align-items:center;justify-content:center;font-size:20px;}
+  .ctitle{font-size:17px;font-weight:700;letter-spacing:-.01em;}
+  .cdate{font-size:12px;color:var(--text4);margin-top:1px;}
+  .badges{display:flex;gap:7px;align-items:center;}
+  .badge{font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:5px;}
+  .b-green{background:rgba(34,197,94,.13);color:#4ade80;}
+  .b-red{background:rgba(239,68,68,.13);color:#f87171;}
+  .b-gray{background:var(--raised);color:var(--text3);}
+
+  /* Focal progress strip (①) */
+  .focal{display:flex;align-items:center;gap:22px;padding:14px 18px;background:rgba(13,20,36,.55);border:1px solid var(--border);border-radius:14px;margin-bottom:18px;}
+  .ring-wrap{display:flex;align-items:center;gap:13px;}
+  .ring{position:relative;width:54px;height:54px;flex:none;}
+  .ring .ctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring .ctr b{font-size:13px;font-weight:700;color:var(--text1);line-height:1;}
+  .ring .ctr span{font-size:8px;color:var(--text4);text-transform:uppercase;letter-spacing:.05em;margin-top:1px;}
+  .focal-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--text4);font-weight:700;}
+  .focal-main{font-size:14px;font-weight:600;color:var(--text1);margin-top:2px;}
+  .divider{width:1px;height:40px;background:var(--border);}
+  .timestat{flex:1;}
+  .bar{height:6px;border-radius:3px;background:var(--raised);margin-top:7px;overflow:hidden;max-width:230px;}
+  .bar > i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--brand2),var(--brand));}
+
+  /* Two columns (④) */
+  .grid2{display:grid;grid-template-columns:1.15fr 1fr;gap:18px;}
+  .zone-lbl{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text4);margin-bottom:9px;display:flex;align-items:center;gap:6px;}
+
+  /* Agenda rows (② + ③) */
+  .agenda{display:flex;flex-direction:column;}
+  .arow{display:flex;align-items:stretch;gap:10px;padding:8px 0;border-top:1px solid rgba(36,48,73,.4);}
+  .arow:first-child{border-top:none;}
+  .atime{width:46px;flex:none;text-align:right;font-size:11px;font-weight:600;color:var(--text3);font-variant-numeric:tabular-nums;padding-top:2px;}
+  .atime.now{color:var(--brand);}
+  .arail{width:3px;border-radius:2px;flex:none;}
+  .abody{flex:1;min-width:0;}
+  .atitle{font-size:13px;color:var(--text1);display:flex;align-items:center;gap:6px;}
+  .ameta{font-size:11px;color:var(--text4);margin-top:1px;}
+  .pill{font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:10px;text-transform:uppercase;letter-spacing:.03em;}
+  .p-ovd{background:rgba(239,68,68,.15);color:#f87171;}
+  .p-urgent{background:rgba(239,68,68,.13);color:#f87171;}
+  .p-high{background:rgba(249,115,22,.14);color:#fb923c;}
+  .play{width:26px;height:26px;border-radius:8px;background:var(--raised);color:var(--text4);display:flex;align-items:center;justify-content:center;font-size:9px;flex:none;align-self:center;}
+  .grp{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text5);margin:10px 0 2px;}
+
+  /* Logged panel (④) */
+  .logged-panel{background:rgba(28,39,64,.45);border:1px solid rgba(36,48,73,.5);border-radius:12px;padding:12px;}
+  .lrow{display:flex;align-items:center;gap:9px;padding:7px 0;border-top:1px solid rgba(36,48,73,.35);}
+  .lrow:first-of-type{border-top:none;}
+  .ldot{width:7px;height:7px;border-radius:50%;flex:none;}
+  .lamt{margin-left:auto;font-size:12px;color:var(--brand);font-weight:600;font-variant-numeric:tabular-nums;}
+
+  /* completed */
+  .done-sec{margin-top:12px;padding-top:11px;border-top:1px solid rgba(36,48,73,.35);}
+  .drow{display:flex;align-items:center;gap:8px;padding:3px 0;}
+  .drow .t{font-size:12px;color:var(--text3);text-decoration:line-through;}
+
+  /* annotation pins */
+  .pin{position:absolute;width:20px;height:20px;border-radius:50%;background:var(--brand2);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(99,102,241,.5);z-index:5;}
+
+  .legend{margin-top:30px;padding:18px 20px;background:var(--surface);border:1px solid var(--border);border-radius:12px;font-size:13px;color:var(--text3);line-height:1.85;max-width:720px;}
+  .legend b{color:var(--text1);}
+</style>
+</head>
+<body>
+  <h1>Today at a Glance — Improved</h1>
+  <div class="sub">Wireframe. Numbered pins map to the five improvements (legend below). Same sample data as the comparison.</div>
+
+  <div class="card">
+    <!-- pins -->
+    <div class="pin" style="top:14px;left:-10px;">⑤</div>
+    <div class="pin" style="top:86px;left:-10px;">①</div>
+    <div class="pin" style="top:210px;left:-10px;">②</div>
+    <div class="pin" style="top:262px;left:138px;">③</div>
+    <div class="pin" style="top:184px;right:-10px;">④</div>
+
+    <!-- Header ⑤ -->
+    <div class="chead">
+      <div class="chead-l">
+        <div class="sun">☀️</div>
+        <div><div class="ctitle">Today at a Glance</div><div class="cdate">Tuesday, June 2</div></div>
+      </div>
+      <div class="badges">
+        <span class="badge b-green">✓ 3 done</span>
+        <span class="badge b-red">⚠ 2 overdue</span>
+        <span class="badge b-gray">⏱ 2h 6m</span>
+      </div>
+    </div>
+
+    <!-- Focal progress strip ① -->
+    <div class="focal">
+      <div class="ring-wrap">
+        <div class="ring">
+          <svg width="54" height="54" viewBox="0 0 54 54">
+            <circle cx="27" cy="27" r="23" fill="none" stroke="#1c2740" stroke-width="6"/>
+            <circle cx="27" cy="27" r="23" fill="none" stroke="#818cf8" stroke-width="6" stroke-linecap="round"
+              stroke-dasharray="144.5" stroke-dashoffset="91" transform="rotate(-90 27 27)"/>
+          </svg>
+          <div class="ctr"><b>37%</b><span>day</span></div>
+        </div>
+        <div>
+          <div class="focal-lbl">Tasks</div>
+          <div class="focal-main">3 of 8 done</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="timestat">
+        <div class="focal-lbl">Focus time</div>
+        <div class="focal-main">2h 6m <span style="color:var(--text4);font-weight:400;font-size:12px;">/ 4h goal</span></div>
+        <div class="bar"><i style="width:52%"></i></div>
+      </div>
+    </div>
+
+    <!-- Two columns ④ -->
+    <div class="grid2">
+      <!-- Agenda (left) ② ③ -->
+      <div>
+        <div class="zone-lbl">📋 To do · by time</div>
+        <div class="agenda">
+          <div class="arow">
+            <div class="atime now">8:00a</div>
+            <div class="arail" style="background:#eab308"></div>
+            <div class="abody"><div class="atitle">🎯 SM Strategy</div><div class="ameta">Zuvraah</div></div>
+            <div class="play">▶</div>
+          </div>
+          <div class="arow">
+            <div class="atime">10:00a</div>
+            <div class="arail" style="background:#f97316"></div>
+            <div class="abody"><div class="atitle">📈 AI Trading Agent App <span class="pill p-urgent">Urgent</span></div><div class="ameta">Claude Crash Course</div></div>
+            <div class="play">▶</div>
+          </div>
+          <div class="arow">
+            <div class="atime">2:00p</div>
+            <div class="arail" style="background:#ec4899"></div>
+            <div class="abody"><div class="atitle">🤝 LinkedIn Outreach <span class="pill p-ovd">Overdue</span></div><div class="ameta">Job Hunt</div></div>
+            <div class="play">▶</div>
+          </div>
+          <div class="arow">
+            <div class="atime">4:00p</div>
+            <div class="arail" style="background:#eab308"></div>
+            <div class="abody"><div class="atitle">🎬 A Ball of Fire Reel <span class="pill p-ovd">Overdue</span></div><div class="ameta">Zuvraah</div></div>
+            <div class="play">▶</div>
+          </div>
+          <div class="grp">Anytime</div>
+          <div class="arow">
+            <div class="atime" style="color:var(--text5)">—</div>
+            <div class="arail" style="background:#6366f1"></div>
+            <div class="abody"><div class="atitle">📊 WIO Account Setup</div><div class="ameta">Inbox</div></div>
+            <div class="play">▶</div>
+          </div>
+        </div>
+
+        <div class="done-sec">
+          <div class="zone-lbl" style="margin-bottom:6px;">✓ Completed today</div>
+          <div class="drow"><span style="color:#4ade80;font-size:11px;">●</span><span class="t">Claude Co-Work: Foundation</span></div>
+          <div class="drow"><span style="color:#4ade80;font-size:11px;">●</span><span class="t">Claude Artifacts demo</span></div>
+        </div>
+      </div>
+
+      <!-- Logged (right) ④ -->
+      <div>
+        <div class="zone-lbl">⏱ Time logged today</div>
+        <div class="logged-panel">
+          <div class="lrow"><span class="ldot" style="background:#f97316"></span>📈 AI Trading Agent App<span class="lamt">1h 20m</span></div>
+          <div class="lrow"><span class="ldot" style="background:#ec4899"></span>🤝 LinkedIn Outreach<span class="lamt">46m</span></div>
+          <div class="lrow" style="border-top:1px solid rgba(36,48,73,.5);margin-top:4px;"><span style="font-size:11px;color:var(--text4);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Total</span><span class="lamt" style="color:var(--text1)">2h 6m</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div><span class="ann-badge">①</span><b>Day-progress focal strip</b> — donut (tasks done) + focus-time bar vs goal. The card now has a point your eye lands on first.</div>
+    <div><span class="ann-badge">②</span><b>Leading time rail</b> — each row shows its due time; timeless tasks grouped under “Anytime.” The chronological order is now self-explanatory.</div>
+    <div><span class="ann-badge">③</span><b>Richer rows</b> — project-color accent rail (replaces the 2px dot) + priority / overdue pills instead of bare red text.</div>
+    <div><span class="ann-badge">④</span><b>Two distinct zones</b> — “Time logged” gets its own raised panel with a running total, so plan (left) vs actual (right) read as separate.</div>
+    <div><span class="ann-badge">⑤</span><b>Stronger header</b> — larger title; badges carry short labels on desktop, collapse to icon+number on mobile.</div>
+    <div style="margin-top:8px;color:var(--text5);">Note: I used the <b>project color</b> for the accent rail (keeps project identity at a glance) and show priority as a small pill — slightly different from “priority-colored bar.” Easy to flip if you prefer priority on the rail.</div>
+  </div>
+</body>
+</html>

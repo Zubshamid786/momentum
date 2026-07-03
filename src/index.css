@@ -1,0 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Theme tokens (RGB channels for Tailwind opacity support) ── */
+html.dark {
+  --th-bg:      8 10 20;        /* near-black, bluer than slate */
+  --th-surface: 13 17 35;       /* deep navy surface */
+  --th-card:    20 27 50;       /* card layer */
+  --th-raised:  30 40 68;       /* raised/hover */
+  --th-border:  40 52 82;       /* subtle border */
+  --th-text1:   237 242 255;    /* near-white with slight blue */
+  --th-text2:   196 208 238;    /* secondary text */
+  --th-text3:   138 153 190;    /* muted text */
+  --th-text4:   90 108 150;     /* placeholder */
+  --th-text5:   55 72 108;      /* very dim */
+  --chart-grid: rgba(40,52,82,0.8);
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.35), 0 1px 4px rgba(0,0,0,0.2);
+  --shadow-modal: 0 24px 64px rgba(0,0,0,0.6), 0 4px 16px rgba(0,0,0,0.3);
+}
+
+html:not(.dark) {
+  --th-bg:      238 242 250;
+  --th-surface: 255 255 255;
+  --th-card:    255 255 255;
+  --th-raised:  228 234 246;
+  --th-border:  218 225 240;
+  --th-text1:   10 14 30;
+  --th-text2:   28 38 68;
+  --th-text3:   72 88 130;
+  --th-text4:   108 124 168;
+  --th-text5:   158 172 210;
+  --chart-grid: #dce4f0;
+  --shadow-card: 0 2px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-modal: 0 16px 48px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  height: 100dvh; /* mobile: shrinks when address bar shows */
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Smooth scrolling in all overflow-y containers on mobile */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'ss01', 'ss02', 'cv01', 'cv03';
+  letter-spacing: -0.011em;
+}
+
+/* ── Typography ── */
+h1, h2, h3 {
+  letter-spacing: -0.02em;
+  font-feature-settings: 'ss01', 'ss02';
+}
+
+/* Tabular numbers globally for counters/times */
+.tabular-nums, .font-mono {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgb(var(--th-raised)); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgb(var(--th-border)); }
+
+/* ── Glass utility ── */
+@layer utilities {
+  .glass {
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    background: rgb(var(--th-surface) / 0.75);
+    border: 1px solid rgb(var(--th-border) / 0.6);
+  }
+
+  .glass-card {
+    backdrop-filter: blur(12px) saturate(1.3);
+    -webkit-backdrop-filter: blur(12px) saturate(1.3);
+    background: rgb(var(--th-card) / 0.8);
+    border: 1px solid rgb(var(--th-border) / 0.5);
+  }
+
+  .card-shadow {
+    box-shadow: var(--shadow-card);
+  }
+
+  .modal-shadow {
+    box-shadow: var(--shadow-modal);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #6366f1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .no-drag { -webkit-app-region: no-drag; }
+  .drag    { -webkit-app-region: drag; }
+}
+
+/* ── Component layer: elevated cards ── */
+@layer components {
+  .card {
+    @apply bg-th-card/80 border border-th-border/60 rounded-xl;
+    box-shadow: var(--shadow-card);
+  }
+
+  .surface-panel {
+    @apply bg-th-surface border-r border-th-border;
+  }
+
+  /* Button base */
+  .btn-ghost {
+    @apply px-3 py-1.5 rounded-lg text-xs font-medium text-th-text3 hover:text-th-text1 hover:bg-th-raised transition-colors;
+  }
+
+  .btn-primary {
+    @apply px-4 py-2 rounded-lg text-sm font-semibold bg-brand-500 text-white hover:bg-brand-400 transition-colors;
+    box-shadow: 0 1px 8px rgba(99,102,241,0.35);
+  }
+}
+
+/* ── Journal markdown preview ── */
+.prose-journal { color: rgb(var(--th-text1)); font-size: 0.9rem; line-height: 1.75; }
+.prose-journal h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin: 1.4em 0 0.4em; color: rgb(var(--th-text1)); }
+.prose-journal h2 { font-size: 1.15rem; font-weight: 600; letter-spacing: -0.015em; margin: 1.2em 0 0.3em; color: rgb(var(--th-text1)); }
+.prose-journal h3 { font-size: 1rem; font-weight: 600; margin: 1em 0 0.25em; color: rgb(var(--th-text2)); }
+.prose-journal p { margin: 0.6em 0; color: rgb(var(--th-text2)); }
+.prose-journal strong { font-weight: 600; color: rgb(var(--th-text1)); }
+.prose-journal em { color: rgb(var(--th-text3)); font-style: italic; }
+.prose-journal code { font-family: var(--font-mono, 'SF Mono', monospace); font-size: 0.82em; background: rgb(var(--th-raised)); padding: 0.1em 0.35em; border-radius: 4px; }
+.prose-journal ul, .prose-journal ol { padding-left: 1.4em; margin: 0.5em 0; color: rgb(var(--th-text2)); }
+.prose-journal li { margin: 0.25em 0; }
+.prose-journal hr { border: none; border-top: 1px solid rgb(var(--th-border)); margin: 1.4em 0; }
+.prose-journal .empty-hint { color: rgb(var(--th-text5)); font-style: italic; }
+
+/* ── Sidebar / TopBar refinements ── */
+header, aside {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Smooth focus ring */
+:focus-visible {
+  outline: 2px solid rgb(99 102 241 / 0.6);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

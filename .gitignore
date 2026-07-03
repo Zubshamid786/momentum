@@ -1,0 +1,12 @@
+node_modules/
+dist/
+dist-electron/
+release/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+.DS_Store
+
+# GitHub Actions workflow — excluded until gh token has workflow scope (deploy via scripts/deploy-pages.sh instead)
+.github/

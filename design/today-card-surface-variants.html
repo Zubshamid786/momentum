@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Today at a Glance — Surface Variants</title>
+<style>
+  /* DARK tokens */
+  .dark{
+    --bg:#060b18;--surface:#0d1424;--card:#161f33;--raised:#1c2740;--border:#243049;
+    --text1:#f1f5f9;--text2:#cbd5e1;--text3:#94a3b8;--text4:#64748b;--text5:#475569;
+  }
+  /* LIGHT tokens */
+  .light{
+    --bg:#eef1f6;--surface:#ffffff;--card:#f7f9fc;--raised:#eef1f6;--border:#dde3ec;
+    --text1:#0f172a;--text2:#334155;--text3:#64748b;--text4:#94a3b8;--text5:#aab4c4;
+  }
+  :root{--brand:#818cf8;--brand2:#6366f1;--green:#22c55e;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#02030a;font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;padding:34px;color:#cbd5e1;font-size:14px;}
+  h1{font-size:18px;font-weight:700;color:#f1f5f9;margin-bottom:4px;}
+  .sub{font-size:13px;color:#64748b;margin-bottom:26px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+  @media(max-width:1100px){.grid{grid-template-columns:1fr;}}
+  .pane{padding:20px;border-radius:16px;}
+  .pane.dark{background:#060b18;}
+  .pane.light{background:#eef1f6;}
+  .ptag{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;}
+  .dark .ptag{color:#64748b;}.light .ptag{color:#94a3b8;}
+
+  /* ============ CARD VARIANTS ============ */
+  /* Current (amber hero) */
+  .card-amber{
+    background:linear-gradient(135deg,rgba(234,179,8,.10),rgba(22,31,51,.82) 52%,rgba(99,102,241,.07));
+    border:1px solid rgba(234,179,8,.22);box-shadow:0 4px 32px rgba(234,179,8,.07);
+  }
+  .light .card-amber{background:linear-gradient(135deg,rgba(234,179,8,.12),rgba(255,255,255,.9) 55%,rgba(99,102,241,.06));border:1px solid rgba(234,179,8,.3);}
+
+  /* A — fully neutral */
+  .card-neutral{background:var(--surface);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.18);}
+
+  /* B — neutral + subtle hero accent (slightly elevated, soft glass, faint top sheen) */
+  .card-hero{
+    background:linear-gradient(180deg,color-mix(in srgb,var(--surface) 92%,#fff) 0%,var(--surface) 60%);
+    border:1px solid var(--border);
+    box-shadow:0 8px 30px rgba(0,0,0,.28), 0 1px 0 rgba(255,255,255,.04) inset;
+    backdrop-filter:blur(10px);
+  }
+  .light .card-hero{box-shadow:0 10px 30px rgba(15,23,42,.10), 0 1px 0 rgba(255,255,255,.7) inset;}
+
+  .card{border-radius:18px;padding:20px 22px;}
+
+  .chead{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .chead-l{display:flex;align-items:center;gap:12px;}
+  .sun{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;}
+  .sun.amber{background:rgba(234,179,8,.16);}
+  .sun.neutral{background:var(--raised);}
+  .ctitle{font-size:16px;font-weight:700;color:var(--text1);letter-spacing:-.01em;}
+  .cdate{font-size:12px;color:var(--text4);margin-top:1px;}
+  .badges{display:flex;gap:6px;}
+  .badge{font-size:11px;font-weight:600;padding:4px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:4px;}
+  .b-green{background:rgba(34,197,94,.13);color:#16a34a;}.dark .b-green{color:#4ade80;}
+  .b-red{background:rgba(239,68,68,.13);color:#dc2626;}.dark .b-red{color:#f87171;}
+  .b-gray{background:var(--raised);color:var(--text3);}
+
+  .focal{display:flex;align-items:center;gap:18px;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:13px;margin-bottom:16px;}
+  .light .focal{background:var(--card);}
+  .ring{position:relative;width:50px;height:50px;flex:none;}
+  .ring .ctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring .ctr b{font-size:12px;font-weight:700;color:var(--text1);line-height:1;}
+  .ring .ctr span{font-size:7px;color:var(--text4);text-transform:uppercase;}
+  .flbl{font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--text4);font-weight:700;}
+  .fmain{font-size:13px;font-weight:600;color:var(--text1);margin-top:2px;}
+  .vdiv{width:1px;height:36px;background:var(--border);}
+  .bar{height:6px;border-radius:3px;background:var(--raised);margin-top:6px;max-width:200px;overflow:hidden;}
+  .bar>i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#6366f1,#818cf8);}
+
+  .cols{display:grid;grid-template-columns:1.1fr 1fr;gap:16px;}
+  .zlbl{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text4);margin-bottom:8px;}
+  .arow{display:flex;align-items:stretch;gap:9px;padding:7px 0;border-top:1px solid var(--border);}
+  .arow:first-child{border-top:none;}
+  .atime{width:42px;flex:none;text-align:right;font-size:11px;font-weight:600;color:var(--text3);}
+  .atime.now{color:var(--brand);}
+  .arail{width:3px;border-radius:2px;flex:none;}
+  .atitle{font-size:12.5px;color:var(--text1);display:flex;align-items:center;gap:5px;}
+  .ameta{font-size:10.5px;color:var(--text4);margin-top:1px;}
+  .pill{font-size:8.5px;font-weight:700;padding:1px 5px;border-radius:9px;text-transform:uppercase;}
+  .p-ovd{background:rgba(239,68,68,.15);color:#dc2626;}.dark .p-ovd{color:#f87171;}
+  .p-urg{background:rgba(239,68,68,.13);color:#dc2626;}.dark .p-urg{color:#f87171;}
+  .play{width:24px;height:24px;border-radius:7px;background:var(--raised);color:var(--text4);display:flex;align-items:center;justify-content:center;font-size:8px;flex:none;align-self:center;}
+  .lpanel{background:var(--raised);border:1px solid var(--border);border-radius:11px;padding:11px;}
+  .light .lpanel{background:var(--card);}
+  .lrow{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--border);font-size:12px;color:var(--text2);}
+  .lrow:first-child{border-top:none;}
+  .ldot{width:7px;height:7px;border-radius:50%;flex:none;}
+  .lamt{margin-left:auto;font-size:11px;color:var(--brand);font-weight:600;}
+  .ltot{margin-left:auto;font-size:11px;color:var(--text1);font-weight:700;}
+</style>
+</head>
+<body>
+  <h1>Today at a Glance — surface options</h1>
+  <div class="sub">Each option shown in dark + light. Same content throughout.</div>
+
+  <!-- helper template rendered 6 times via copies -->
+  <div class="grid" id="grid"></div>
+
+  <script>
+  const card = (sunClass) => `
+    <div class="card-inner">
+      <div class="chead">
+        <div class="chead-l">
+          <div class="sun ${sunClass}">☀️</div>
+          <div><div class="ctitle">Today at a Glance</div><div class="cdate">Tuesday, June 2</div></div>
+        </div>
+        <div class="badges">
+          <span class="badge b-green">✓ 3</span>
+          <span class="badge b-red">⚠ 2</span>
+          <span class="badge b-gray">⏱ 2h 6m</span>
+        </div>
+      </div>
+      <div class="focal">
+        <div style="display:flex;align-items:center;gap:11px;">
+          <div class="ring">
+            <svg width="50" height="50" viewBox="0 0 54 54"><circle cx="27" cy="27" r="23" fill="none" stroke="var(--raised)" stroke-width="6"/><circle cx="27" cy="27" r="23" fill="none" stroke="#818cf8" stroke-width="6" stroke-linecap="round" stroke-dasharray="144.5" stroke-dashoffset="91" transform="rotate(-90 27 27)"/></svg>
+            <div class="ctr"><b>37%</b><span>day</span></div>
+          </div>
+          <div><div class="flbl">Tasks</div><div class="fmain">3 of 8 done</div></div>
+        </div>
+        <div class="vdiv"></div>
+        <div style="flex:1;"><div class="flbl">Focus time</div><div class="fmain">2h 6m <span style="color:var(--text4);font-weight:400;font-size:11px;">/ 4h</span></div><div class="bar"><i style="width:52%"></i></div></div>
+      </div>
+      <div class="cols">
+        <div>
+          <div class="zlbl">To do · by time</div>
+          <div class="arow"><div class="atime now">8:00a</div><div class="arail" style="background:#eab308"></div><div style="flex:1;min-width:0;"><div class="atitle">🎯 SM Strategy</div><div class="ameta">Zuvraah</div></div><div class="play">▶</div></div>
+          <div class="arow"><div class="atime">10:00a</div><div class="arail" style="background:#f97316"></div><div style="flex:1;min-width:0;"><div class="atitle">📈 AI Trading Agent <span class="pill p-urg">Urgent</span></div><div class="ameta">Claude Crash Course</div></div><div class="play">▶</div></div>
+          <div class="arow"><div class="atime">2:00p</div><div class="arail" style="background:#ec4899"></div><div style="flex:1;min-width:0;"><div class="atitle">🤝 LinkedIn Outreach <span class="pill p-ovd">Overdue</span></div><div class="ameta">Job Hunt</div></div><div class="play">▶</div></div>
+        </div>
+        <div>
+          <div class="zlbl">Time logged today</div>
+          <div class="lpanel">
+            <div class="lrow"><span class="ldot" style="background:#f97316"></span>📈 AI Trading Agent<span class="lamt">1h 20m</span></div>
+            <div class="lrow"><span class="ldot" style="background:#ec4899"></span>🤝 LinkedIn Outreach<span class="lamt">46m</span></div>
+            <div class="lrow"><span style="font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:var(--text4);font-weight:700;">Total</span><span class="ltot">2h 6m</span></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  const variants = [
+    { tag:'Current — amber hero',     cls:'card-amber',   sun:'amber'   },
+    { tag:'A — fully neutral',        cls:'card-neutral', sun:'neutral' },
+    { tag:'B — neutral + hero accent',cls:'card-hero',    sun:'amber'   },
+  ];
+  let html = '';
+  ['dark','light'].forEach(theme=>{
+    variants.forEach(v=>{
+      html += `<div class="pane ${theme}"><div class="ptag">${v.tag} · ${theme}</div><div class="card ${v.cls}">${card(v.sun)}</div></div>`;
+    });
+  });
+  document.getElementById('grid').innerHTML = html;
+  </script>
+</body>
+</html>
