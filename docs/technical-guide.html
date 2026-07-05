@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Momentum — Technical Guide</title>
+<style>
+  :root{
+    --bg:#060b18;--surface:#0d1424;--card:#131c30;--raised:#1c2740;--border:#243049;
+    --t1:#f1f5f9;--t2:#cbd5e1;--t3:#94a3b8;--t4:#64748b;
+    --brand:#818cf8;--brand2:#6366f1;--green:#4ade80;--amber:#fbbf24;--red:#f87171;--cyan:#22d3ee;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--t2);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    font-size:15.5px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px 96px;}
+
+  .hero{position:relative;padding:64px 0 40px;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-160px;right:-100px;width:520px;height:420px;
+    background:radial-gradient(ellipse,rgba(99,102,241,.22),transparent 65%);pointer-events:none;}
+  .badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:20px;
+    background:rgba(129,140,248,.12);border:1px solid rgba(129,140,248,.3);color:var(--brand);
+    font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;}
+  h1{font-size:36px;font-weight:800;color:var(--t1);letter-spacing:-.02em;}
+  .sub{font-size:16px;color:var(--t3);margin-top:8px;max-width:640px;}
+  .links{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;}
+  .links a{padding:8px 18px;border-radius:11px;font-size:13px;font-weight:600;text-decoration:none;}
+  .links .primary{background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;box-shadow:0 4px 16px rgba(99,102,241,.35);}
+  .links .ghost{background:var(--card);border:1px solid var(--border);color:var(--t2);}
+
+  h2{font-size:22px;font-weight:750;color:var(--t1);letter-spacing:-.01em;margin:56px 0 14px;
+    padding-left:16px;border-left:4px solid var(--brand2);}
+  h3{font-size:16px;font-weight:700;color:var(--brand);margin:24px 0 8px;}
+  p{margin:10px 0;}
+  strong{color:var(--t1);font-weight:650;}
+  a{color:var(--brand);}
+  ul,ol{margin:10px 0 10px 22px;}
+  li{margin:6px 0;}
+
+  code{background:var(--raised);border:1px solid var(--border);border-radius:6px;padding:1.5px 7px;
+    font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:13px;color:#a5b4fc;}
+  pre{background:#0a1020;border:1px solid var(--border);border-radius:14px;padding:18px 22px;
+    overflow-x:auto;margin:16px 0;font-size:13px;line-height:1.65;}
+  pre code{background:none;border:none;padding:0;color:#c7d2fe;}
+  pre .cm{color:#4a5a7a;} pre .kw{color:#f472b6;} pre .str{color:#86efac;}
+
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;background:var(--card);
+    border-radius:14px;overflow:hidden;border:1px solid var(--border);}
+  th{background:var(--raised);color:var(--t1);font-weight:650;text-align:left;padding:11px 16px;font-size:13px;
+    text-transform:uppercase;letter-spacing:.04em;}
+  td{padding:11px 16px;border-top:1px solid rgba(36,48,73,.6);vertical-align:top;}
+  td code{white-space:nowrap;}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin:16px 0;}
+  .callout{border-radius:13px;padding:14px 18px;margin:14px 0;font-size:14px;border:1px solid;}
+  .callout b{display:block;margin-bottom:3px;}
+  .c-amber{background:rgba(251,191,36,.07);border-color:rgba(251,191,36,.28);}
+  .c-amber b{color:var(--amber);}
+  .c-red{background:rgba(248,113,113,.07);border-color:rgba(248,113,113,.28);}
+  .c-red b{color:var(--red);}
+  .c-cyan{background:rgba(34,211,238,.06);border-color:rgba(34,211,238,.25);}
+  .c-cyan b{color:var(--cyan);}
+
+  .modes{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0;}
+  @media(max-width:720px){.modes{grid-template-columns:repeat(2,1fr);}}
+  .mode{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;position:relative;}
+  .mode .n{position:absolute;top:12px;right:14px;font-size:22px;font-weight:800;color:rgba(129,140,248,.18);}
+  .mode b{color:var(--t1);font-size:14px;display:block;margin-bottom:5px;}
+  .mode span{font-size:12.5px;color:var(--t3);line-height:1.55;display:block;}
+  .mode .tag{display:inline-block;margin-bottom:8px;padding:2px 9px;border-radius:12px;font-size:11px;font-weight:700;}
+  .tg-i{background:rgba(129,140,248,.15);color:var(--brand);}
+  .tg-g{background:rgba(74,222,128,.13);color:var(--green);}
+  .tg-c{background:rgba(34,211,238,.12);color:var(--cyan);}
+  .tg-a{background:rgba(251,191,36,.13);color:var(--amber);}
+
+  .gotcha{display:flex;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:16px 18px;margin:10px 0;}
+  .gotcha .num{flex:none;width:28px;height:28px;border-radius:9px;background:rgba(251,191,36,.14);
+    color:var(--amber);font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .gotcha p{margin:0;font-size:14px;}
+
+  footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--border);text-align:center;font-size:13px;color:var(--t4);}
+  @media print{
+    body{background:#fff;color:#1e293b;}
+    :root{--bg:#fff;--card:#f8fafc;--raised:#eef2f7;--border:#dbe2ec;--t1:#0f172a;--t2:#334155;--t3:#64748b;}
+    .hero::before{display:none;}
+    pre{background:#f1f5f9;} pre code{color:#334155;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="badge">⚙️ Technical Guide</span>
+    <h1>Momentum <span style="color:var(--brand);">Internals</span></h1>
+    <p class="sub">One React codebase → macOS desktop app, installable PWA, and web app — all sharing a single cloud SQLite database on Turso. Zero hosting cost.</p>
+    <div class="links">
+      <a class="primary" href="https://zubshamid786.github.io/momentum/">Live App</a>
+      <a class="ghost" href="https://github.com/Zubshamid786/momentum">GitHub Repo</a>
+    </div>
+  </div>
+
+  <h2>Front-end · Back-end · Database</h2>
+  <table>
+    <tr><th style="width:130px;">Layer</th><th>What it is</th></tr>
+    <tr><td><strong style="color:var(--brand);">Front-end</strong></td><td><strong>React 18 + Vite + Tailwind CSS.</strong> Everything you see — every screen, chart, and interaction — is one React single-page app. The same built bundle runs in three shells: the Electron desktop window, the installed Android PWA, and any web browser.</td></tr>
+    <tr><td><strong style="color:var(--green);">Back-end</strong></td><td><strong>There is no traditional backend server — by design.</strong> In cloud mode the front-end talks <em>directly</em> to the database over HTTPS (a “serverless” architecture): nothing to host, nothing to keep awake, nothing to pay for. All business logic (queries, aggregations, reports) lives in the data layer itself. Two situational stand-ins exist: on desktop-local mode, the <strong>Electron main process</strong> acts as a mini-backend (IPC → SQLite); in LAN mode, a small <strong>Node HTTP server on the Mac</strong> (port 3001) plays the role.</td></tr>
+    <tr><td><strong style="color:var(--cyan);">Database</strong></td><td><strong>SQLite — in two homes, same schema (19 tables).</strong> Primary: <strong>Turso</strong>, a cloud-hosted SQLite (libsql) in Mumbai that all devices share over HTTPS. Secondary: a plain <strong>SQLite file on the Mac</strong> (via better-sqlite3), used in desktop-local mode and kept as a frozen offline backup.</td></tr>
+  </table>
+
+  <h2>Architecture</h2>
+  <p>Every UI component talks to a single abstraction — <code>window.api</code> (~75 async functions). At startup, <code>src/utils/bootstrapApi.js</code> picks which backend implements it, in priority order:</p>
+
+  <div class="modes">
+    <div class="mode"><span class="n">1</span><span class="tag tg-i">turso</span><b>Cloud</b><span>Creds in localStorage → SQL over HTTPS to Turso. Shared across all devices.</span></div>
+    <div class="mode"><span class="n">2</span><span class="tag tg-g">electron</span><b>Desktop local</b><span>IPC → main process → better-sqlite3. Used when no cloud creds saved.</span></div>
+    <div class="mode"><span class="n">3</span><span class="tag tg-c">rest</span><b>Mac server</b><span>Browser served from the Mac (WiFi/Tailscale) → REST on :3001.</span></div>
+    <div class="mode"><span class="n">4</span><span class="tag tg-a">setup</span><b>First run</b><span>Nothing available → CloudSetup connect screen.</span></div>
+  </div>
+
+  <div class="callout c-cyan"><b>Why window.electronApi, not window.api, in the preload</b>
+  <code>contextBridge.exposeInMainWorld</code> creates <em>read-only</em> properties. <code>window.api</code> must stay assignable so cloud mode can take over on desktop — the bootstrap maps <code>window.api = window.electronApi</code> when local mode wins.</div>
+
+  <h2>Stack</h2>
+  <table>
+    <tr><th>Layer</th><th>Tech</th></tr>
+    <tr><td><strong>UI</strong></td><td>React 18 · Vite · Tailwind (custom <code>th-*</code> tokens, dark/light) · Recharts · @dnd-kit · lucide-react</td></tr>
+    <tr><td><strong>Desktop</strong></td><td>Electron · better-sqlite3 · built-in HTTP API server (<code>electron/api-server.js</code>) for WiFi/Tailscale PWA</td></tr>
+    <tr><td><strong>Cloud DB</strong></td><td><a href="https://turso.tech">Turso</a> (libsql — SQLite over HTTPS) · region <code>aws-ap-south-1</code> Mumbai</td></tr>
+    <tr><td><strong>Hosting</strong></td><td>GitHub Pages · <code>gh-pages</code> branch · $0</td></tr>
+  </table>
+
+  <h2>Project structure</h2>
+  <pre><code>electron/
+  main.js            <span class="cm">Electron main process + all IPC handlers</span>
+  preload.js         <span class="cm">contextBridge → window.electronApi</span>
+  database.js        <span class="cm">★ SOURCE OF TRUTH for all SQL (better-sqlite3, sync)</span>
+  api-server.js      <span class="cm">HTTP mirror of the API for the mobile/Tailscale PWA</span>
+src/
+  data/
+    tursoDb.js       <span class="cm">★ AUTO-GENERATED async port of database.js — do not hand-edit</span>
+    queryClient.js   <span class="cm">libsql bridge: q.all/get/run/exec · creds in localStorage</span>
+    tursoApi.js      <span class="cm">maps the window.api surface → tursoDb functions</span>
+  utils/
+    bootstrapApi.js  <span class="cm">backend selection (see Architecture)</span>
+    apiPolyfill.js   <span class="cm">REST-backed window.api for Mac-server mode</span>
+  components/        <span class="cm">feature folders (Dashboard, Projects, Calendar, …)</span>
+scripts/
+  port-db-to-turso.mjs   <span class="cm">regenerates tursoDb.js from database.js</span>
+  patch-turso-port.mjs   <span class="cm">post-transform fixes — run after the port script</span>
+  migrate-to-turso.mjs   <span class="cm">local→cloud data copy (WIPE=1 = fresh snapshot)</span>
+  deploy-pages.sh        <span class="cm">build + publish to GitHub Pages</span></code></pre>
+
+  <h2>The generated data layer</h2>
+  <div class="callout c-red"><b>Golden rule</b><code>src/data/tursoDb.js</code> is <strong>generated, never hand-edited</strong>. All SQL lives once, in <code>electron/database.js</code>.</div>
+  <p>After changing any query there:</p>
+  <pre><code><span class="kw">node</span> scripts/port-db-to-turso.mjs <span class="kw">&amp;&amp;</span> <span class="kw">node</span> scripts/patch-turso-port.mjs
+<span class="kw">npx</span> vite build   <span class="cm"># surfaces any await-in-non-async misses</span></code></pre>
+  <p>The transform converts sync better-sqlite3 calls to <code>await q.*</code>. Hand-patched cases live in the patch script: the one transaction (<code>setDailyIntentions</code>), reused prepared statements, named/positional arg mixes, and <code>.map()</code> callbacks containing awaits. Adding new code with those patterns? Extend the patch script.</p>
+
+  <h2>Development, builds &amp; deploys</h2>
+  <pre><code><span class="kw">npm</span> install
+<span class="kw">npm</span> run dev          <span class="cm"># Electron + Vite dev (desktop)</span>
+<span class="kw">npx</span> vite             <span class="cm"># web-only dev (boots to CloudSetup without creds)</span></code></pre>
+  <table>
+    <tr><th>Target</th><th>Command</th><th>Result</th></tr>
+    <tr><td>Web (Pages)</td><td><code>bash scripts/deploy-pages.sh</code></td><td>live in ~1 min</td></tr>
+    <tr><td>Desktop DMG</td><td><code>npm run build</code></td><td><code>release/Momentum-1.0.0-arm64.dmg</code></td></tr>
+  </table>
+  <div class="callout c-amber"><b>Stuck Pages deploy?</b>Builds occasionally hang GitHub-side. Check &amp; force:
+  <pre style="margin:8px 0 0;"><code>gh api repos/Zubshamid786/momentum/pages/builds/latest --jq .status
+gh api repos/Zubshamid786/momentum/pages/builds -X POST   <span class="cm"># force rebuild</span></code></pre></div>
+  <p>No CI: the Actions workflow in <code>.github/</code> is gitignored (the <code>gh</code> token lacks <code>workflow</code> scope). To enable push-to-deploy: <code>gh auth refresh -s workflow</code>, then un-ignore it.</p>
+
+  <h2>Cloud data &amp; credentials</h2>
+  <ul>
+    <li>Turso URL + token are entered once per device, stored <strong>only in that device's localStorage</strong> — never in the (public) repo.</li>
+    <li>Schema is created idempotently on first connect (<code>initSchema()</code>), gated by a localStorage flag.</li>
+    <li>Fresh cloud snapshot from the Mac's local DB:
+      <pre><code><span class="kw">WIPE=1</span> TURSO_DATABASE_URL=libsql://… TURSO_AUTH_TOKEN=… <span class="kw">node</span> scripts/migrate-to-turso.mjs</code></pre>
+      Uses Node's built-in <code>node:sqlite</code> — better-sqlite3's binary is often left x64 by Electron builds.</li>
+    <li>Token rotation: Turso dashboard → revoke → generate → re-enter per device (Settings → Cloud Sync).</li>
+  </ul>
+
+  <h2>Hard-won gotchas</h2>
+  <div class="gotcha"><div class="num">1</div><p><strong>Tailwind <code>md:</code> breakpoints are unreliable in the Android PWA.</strong> Use a ResizeObserver on the container (see <code>MountainView.jsx</code>) or explicit props (<code>TaskDetail</code>'s <code>panel</code> prop).</p></div>
+  <div class="gotcha"><div class="num">2</div><p><strong>SQLite <code>date('now')</code> is UTC.</strong> Date-only timestamps must be anchored at <em>noon local</em> so they land on the right calendar day in every timezone.</p></div>
+  <div class="gotcha"><div class="num">3</div><p><strong>PWA on a subpath needs relative manifest paths</strong> — <code>start_url: "./"</code>, <code>scope: "./"</code>, and real 192/512 PNG icons — or Android installs a Chrome-badged shortcut instead of a WebAPK.</p></div>
+  <div class="gotcha"><div class="num">4</div><p><strong><code>(await …)</code> statement lines need a leading <code>;</code></strong> in generated code — ASI can glue them to the previous line as a call expression.</p></div>
+  <div class="gotcha"><div class="num">5</div><p><strong>libsql rejects <code>undefined</code> args</strong> (better-sqlite3 tolerated extra named params) — <code>queryClient.cleanArgs</code> strips them.</p></div>
+
+  <footer>Momentum · Technical Guide · <a href="https://github.com/Zubshamid786/momentum">github.com/Zubshamid786/momentum</a></footer>
+</div>
+</body>
+</html>
