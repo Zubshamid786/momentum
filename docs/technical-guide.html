@@ -101,6 +101,14 @@
     </div>
   </div>
 
+  <h2>Front-end · Back-end · Database</h2>
+  <table>
+    <tr><th style="width:130px;">Layer</th><th>What it is</th></tr>
+    <tr><td><strong style="color:var(--brand);">Front-end</strong></td><td><strong>React 18 + Vite + Tailwind CSS.</strong> Everything you see — every screen, chart, and interaction — is one React single-page app. The same built bundle runs in three shells: the Electron desktop window, the installed Android PWA, and any web browser.</td></tr>
+    <tr><td><strong style="color:var(--green);">Back-end</strong></td><td><strong>There is no traditional backend server — by design.</strong> In cloud mode the front-end talks <em>directly</em> to the database over HTTPS (a “serverless” architecture): nothing to host, nothing to keep awake, nothing to pay for. All business logic (queries, aggregations, reports) lives in the data layer itself. Two situational stand-ins exist: on desktop-local mode, the <strong>Electron main process</strong> acts as a mini-backend (IPC → SQLite); in LAN mode, a small <strong>Node HTTP server on the Mac</strong> (port 3001) plays the role.</td></tr>
+    <tr><td><strong style="color:var(--cyan);">Database</strong></td><td><strong>SQLite — in two homes, same schema (19 tables).</strong> Primary: <strong>Turso</strong>, a cloud-hosted SQLite (libsql) in Mumbai that all devices share over HTTPS. Secondary: a plain <strong>SQLite file on the Mac</strong> (via better-sqlite3), used in desktop-local mode and kept as a frozen offline backup.</td></tr>
+  </table>
+
   <h2>Architecture</h2>
   <p>Every UI component talks to a single abstraction — <code>window.api</code> (~75 async functions). At startup, <code>src/utils/bootstrapApi.js</code> picks which backend implements it, in priority order:</p>
 

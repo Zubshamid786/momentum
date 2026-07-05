@@ -6,6 +6,14 @@ A personal productivity tracker: projects, tasks, subtasks, time tracking, Pomod
 
 ---
 
+## Front-end · Back-end · Database
+
+| Layer | What it is |
+|---|---|
+| **Front-end** | **React 18 + Vite + Tailwind CSS.** One single-page app; the same built bundle runs in three shells: the Electron desktop window, the installed Android PWA, and any web browser. |
+| **Back-end** | **There is no traditional backend server — by design.** In cloud mode the front-end talks *directly* to the database over HTTPS (serverless): nothing to host, keep awake, or pay for. All business logic lives in the data layer. Two situational stand-ins: on desktop-local mode the **Electron main process** acts as a mini-backend (IPC → SQLite); in LAN mode a small **Node HTTP server on the Mac** (port 3001) plays the role. |
+| **Database** | **SQLite — in two homes, same schema (19 tables).** Primary: **Turso**, cloud-hosted SQLite (libsql) in Mumbai, shared by all devices over HTTPS. Secondary: a plain **SQLite file on the Mac** (better-sqlite3), used in desktop-local mode and kept as a frozen offline backup. |
+
 ## Architecture
 
 The core idea: every UI component talks to a single abstraction, `window.api` (~75 async functions). At startup, `src/utils/bootstrapApi.js` decides which backend implements it, in priority order:
